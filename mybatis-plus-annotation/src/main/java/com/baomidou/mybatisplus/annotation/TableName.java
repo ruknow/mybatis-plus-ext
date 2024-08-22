@@ -24,6 +24,7 @@ import java.lang.annotation.*;
  * @since 2016-01-23
  */
 @Documented
+@Inherited
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.ANNOTATION_TYPE})
 public @interface TableName {

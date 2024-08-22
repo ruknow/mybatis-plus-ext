@@ -24,6 +24,7 @@ import java.lang.annotation.*;
  * @since 2017-09-09
  */
 @Documented
+@Inherited
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.ANNOTATION_TYPE})
 public @interface TableLogic {

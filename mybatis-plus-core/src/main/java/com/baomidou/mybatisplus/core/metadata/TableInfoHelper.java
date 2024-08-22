@@ -15,26 +15,12 @@
  */
 package com.baomidou.mybatisplus.core.metadata;
 
-import com.baomidou.mybatisplus.annotation.DbType;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.KeySequence;
-import com.baomidou.mybatisplus.annotation.OrderBy;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.core.config.GlobalConfig;
 import com.baomidou.mybatisplus.core.handlers.AnnotationHandler;
 import com.baomidou.mybatisplus.core.handlers.PostInitTableInfoHandler;
 import com.baomidou.mybatisplus.core.incrementer.IKeyGenerator;
-import com.baomidou.mybatisplus.core.toolkit.ClassUtils;
-import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
-import com.baomidou.mybatisplus.core.toolkit.ExceptionUtils;
-import com.baomidou.mybatisplus.core.toolkit.GlobalConfigUtils;
-import com.baomidou.mybatisplus.core.toolkit.LambdaUtils;
-import com.baomidou.mybatisplus.core.toolkit.ReflectionKit;
-import com.baomidou.mybatisplus.core.toolkit.StringPool;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.core.toolkit.*;
 import org.apache.ibatis.builder.MapperBuilderAssistant;
 import org.apache.ibatis.builder.StaticSqlSource;
 import org.apache.ibatis.executor.keygen.KeyGenerator;
@@ -50,12 +36,7 @@ import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.type.SimpleTypeRegistry;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static java.util.stream.Collectors.toList;
@@ -329,12 +310,18 @@ public class TableInfoHelper {
                 continue;
             }
 
+            final TableField tableField = field.getAnnotation(TableField.class);
+            TableId tableId = field.getAnnotation(TableId.class);
+            if (tableField == null && tableId == null) {
+                continue;
+            }
+
             boolean isPK = false;
             OrderBy orderBy = annotationHandler.getAnnotation(field, OrderBy.class);
             boolean isOrderBy = orderBy != null;
             /* 主键ID 初始化 */
             if (existTableId) {
-                TableId tableId = annotationHandler.getAnnotation(field, TableId.class);
+                // TableId tableId = annotationHandler.getAnnotation(field, TableId.class);
                 if (tableId != null) {
                     if (isReadPK) {
                         throw ExceptionUtils.mpe("@TableId can't more than one in Class: \"%s\".", clazz.getName());
@@ -353,20 +340,20 @@ public class TableInfoHelper {
                 }
                 continue;
             }
-            final TableField tableField = annotationHandler.getAnnotation(field, TableField.class);
+            // final TableField tableField = annotationHandler.getAnnotation(field, TableField.class);
 
             /* 有 @TableField 注解的字段初始化 */
-            if (tableField != null) {
+            // if (tableField != null) {
                 TableFieldInfo tableFieldInfo = new TableFieldInfo(globalConfig, tableInfo, field, tableField, reflector, existTableLogic, isOrderBy);
                 fieldList.add(tableFieldInfo);
                 postInitTableInfoHandler.postFieldInfo(tableFieldInfo, configuration);
-                continue;
-            }
+                // continue;
+            // }
 
             /* 无 @TableField  注解的字段初始化 */
-            TableFieldInfo tableFieldInfo = new TableFieldInfo(globalConfig, tableInfo, field, reflector, existTableLogic, isOrderBy);
-            fieldList.add(tableFieldInfo);
-            postInitTableInfoHandler.postFieldInfo(tableFieldInfo, configuration);
+            // TableFieldInfo tableFieldInfo = new TableFieldInfo(globalConfig, tableInfo, field, reflector, existTableLogic, isOrderBy);
+            // fieldList.add(tableFieldInfo);
+            // postInitTableInfoHandler.postFieldInfo(tableFieldInfo, configuration);
         }
 
         /* 字段列表 */

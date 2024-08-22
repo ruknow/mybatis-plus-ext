@@ -12,9 +12,9 @@ ext {
 
     libraries = [
         mybatisVersion = '3.5.16',
-        mybatisSpringVersion = '2.1.2',
-        mybatisSpringBootStarterVersion = '2.3.2',
-        springVersion = '5.3.37',
+        mybatisSpringVersion = '3.0.4',
+        mybatisSpringBootStarterVersion = '3.0.3',
+        springVersion = '6.1.12',
         springBootVersion = '2.7.18',
         springBoot3Version = '3.3.2',
         springCloudVersion = '3.1.8',
@@ -91,7 +91,7 @@ subprojects {
     }
 
     compileJava {
-        options.release = 8
+        options.release = 17
     }
 
     repositories {
@@ -148,36 +148,36 @@ subprojects {
         from sourceSets.main.allSource
     }
 
-    javadoc {
-        afterEvaluate {
-            configure(options) {
-                encoding "UTF-8"
-                charSet 'UTF-8'
-                author true
-                version true
-                failOnError false
-                links "http://docs.oracle.com/javase/8/docs/api"
-            }
-        }
-    }
-
-    test {
-        dependsOn("cleanTest", "generatePomFileForMavenJavaPublication")
-        useJUnitPlatform()
-        exclude("**/phoenix/**")
-        exclude("**/postgresql/**")
-//        exclude("**/generator/**")
-    }
+//    javadoc {
+//        afterEvaluate {
+//            configure(options) {
+//                encoding "UTF-8"
+//                charSet 'UTF-8'
+//                author true
+//                version true
+//                failOnError false
+//                links "http://docs.oracle.com/javase/8/docs/api"
+//            }
+//        }
+//    }
+//
+//    test {
+//        dependsOn("cleanTest", "generatePomFileForMavenJavaPublication")
+//        useJUnitPlatform()
+//        exclude("**/phoenix/**")
+//        exclude("**/postgresql/**")
+////        exclude("**/generator/**")
+//    }
 
     task cleanBuildDir(type: Delete) {
         delete "${projectDir}/out"
     }
     tasks.clean.dependsOn(cleanBuildDir)
 
-    task javadocJar(type: Jar) {
-        archiveClassifier = 'javadoc'
-        from javadoc
-    }
+//    task javadocJar(type: Jar) {
+//        archiveClassifier = 'javadoc'
+//        from javadoc
+//    }
 
     tasks.whenTaskAdded { task ->
         if (task.name.contains('signMavenJavaPublication')) {
@@ -208,7 +208,7 @@ subprojects {
                 from components.java
 
                 artifact sourcesJar
-                artifact javadocJar
+//                artifact javadocJar
 
                 pom {
                     name = 'mybatis-plus'
